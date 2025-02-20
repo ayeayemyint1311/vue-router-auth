@@ -54,17 +54,34 @@
 <script setup>
 import { reactive } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 const formData = reactive({
   name: "",
   email: "",
 });
 
+const router = useRouter();
+
 const handleLogin = async () => {
-  const response = await axios.post(
-    "http://127.0.0.1:8000/api/login",
-    formData
-  );
-  console.log(response);
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/login",
+      formData
+    );
+
+    if (response.data.data.token) {
+      // Store token in localStorage
+      localStorage.setItem("auth_token", response.data.data.token);
+
+      // Redirect to dashboard
+      router.push("/dashboard");
+    }
+  } catch (error) {
+    console.error(
+      "Login failed:",
+      error.response?.data?.message || error.message
+    );
+  }
 };
 </script>

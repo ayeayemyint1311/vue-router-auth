@@ -25,12 +25,13 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from) => {
-  if (to.meta.requiresAuth) {
-    return {
-      path: "/login",
-      query: { redirect: to.dashboard },
-    };
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem("auth_token");
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next("/login"); // Redirect to login if not authenticated
+  } else {
+    next();
   }
 });
 
