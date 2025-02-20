@@ -41,13 +41,18 @@
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
+
 const menuItems = [
   { name: "Home" },
   { name: "Analytics" },
   { name: "Settings" },
 ];
 
+const router = useRouter();
+
 const logout = () => {
-  alert("hello world");
+  localStorage.removeItem("auth_token");
+  router.push("/login");
 };
 </script>
