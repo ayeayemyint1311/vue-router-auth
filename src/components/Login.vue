@@ -53,13 +53,18 @@
 
 <script setup>
 import { reactive } from "vue";
+import axios from "axios";
 
 const formData = reactive({
   name: "",
   email: "",
 });
 
-const handleLogin = () => {
-  console.log(formData);
+const handleLogin = async () => {
+  const response = await axios.post(
+    "http://127.0.0.1:8000/api/login",
+    formData
+  );
+  console.log(response);
 };
 </script>
